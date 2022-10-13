@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model campaign {
+  campaing_id                      String        @id(map: "campaign_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  campagin_type_id                 String        @db.Uuid
+  product_id                       String?       @db.Uuid
+  location_id                      String?       @db.Uuid
+  status                           Int           @default(1)
+  created_by                       String        @db.Uuid
+  updated_by                       String?       @db.Uuid
+  deleted_by                       String?       @db.Uuid
+  created_at                       DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at                       DateTime?     @db.Timestamptz(6)
+  deleted_at                       DateTime?     @db.Timestamptz(6)
+  campaign_start_date              DateTime      @db.Timestamptz(6)
+  campaign_end_date                DateTime      @db.Timestamptz(6)
+  target_radius                    Int?
+  campaign_budget                  String?       @db.VarChar(50)
+  users_campaign_created_byTousers users         @relation("campaign_created_byTousers", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_campaign_deleted_byTousers users?        @relation("campaign_deleted_byTousers", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  campaign_type                    campaign_type @relation(fields: [campagin_type_id], references: [campagin_type_id], onDelete: NoAction, onUpdate: NoAction, map: "campaign_id_fkey")
+  location                         location?     @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction)
+  product                          product?      @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  users_campaign_updated_byTousers users?        @relation("campaign_updated_byTousers", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model campaign_type {
+  campagin_type_id                      String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  campaign_type_name                    String     @unique(map: "campaign_type_name_ukey") @db.VarChar
+  platform_id                           String?    @db.Uuid
+  status                                Int        @default(1)
+  created_by                            String     @db.Uuid
+  updated_by                            String?    @db.Uuid
+  deleted_by                            String?    @db.Uuid
+  created_at                            DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime?  @db.Timestamptz(6)
+  deleted_at                            DateTime?  @db.Timestamptz(6)
+  platform                              platform?  @relation(fields: [platform_id], references: [platform_id], onDelete: NoAction, onUpdate: NoAction, map: "campagin_type_platform_id ")
+  users_campaign_type_created_byTousers users      @relation("campaign_type_created_byTousers", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_campaign_type_deleted_byTousers users?     @relation("campaign_type_deleted_byTousers", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_campaign_type_updated_byTousers users?     @relation("campaign_type_updated_byTousers", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  campaign                              campaign[]
+}
+
+model location {
+  location_id                      String     @id(map: "location_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  location_name                    String     @db.VarChar
+  status                           Int        @default(1)
+  created_by                       String     @db.Uuid
+  updated_by                       String?    @db.Uuid
+  deleted_by                       String?    @db.Uuid
+  created_at                       DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at                       DateTime?  @db.Timestamptz(6)
+  deleted_at                       DateTime?  @db.Timestamptz(6)
+  users_location_created_byTousers users      @relation("location_created_byTousers", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_location_deleted_byTousers users?     @relation("location_deleted_byTousers", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_location_updated_byTousers users?     @relation("location_updated_byTousers", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  campaign                         campaign[]
+}
+
+model platform {
+  platform_id                      String          @id(map: "platform_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  platform_name                    String          @unique(map: "platform_name_ukey") @db.VarChar
+  status                           Int             @default(1)
+  created_by                       String          @db.Uuid
+  updated_by                       String?         @db.Uuid
+  deleted_by                       String?         @db.Uuid
+  created_at                       DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                       DateTime?       @db.Timestamptz(6)
+  deleted_at                       DateTime?       @db.Timestamptz(6)
+  users_platform_created_byTousers users           @relation("platform_created_byTousers", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_platform_deleted_byTousers users?          @relation("platform_deleted_byTousers", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_platform_updated_byTousers users?          @relation("platform_updated_byTousers", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  campaign_type                    campaign_type[]
+}
+
+model product {
+  product_id                      String     @id(map: "product_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  product_name                    String     @db.VarChar
+  product_image                   String?
+  price                           String     @db.VarChar
+  status                          Int        @default(1)
+  created_by                      String     @db.Uuid
+  updated_by                      String?    @db.Uuid
+  deleted_by                      String?    @db.Uuid
+  created_at                      DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at                      DateTime?  @db.Timestamptz(6)
+  deleted_at                      DateTime?  @db.Timestamptz(6)
+  users_product_created_byTousers users      @relation("product_created_byTousers", fields: [created_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_product_deleted_byTousers users?     @relation("product_deleted_byTousers", fields: [deleted_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_product_updated_byTousers users?     @relation("product_updated_byTousers", fields: [updated_by], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  campaign                        campaign[]
+}
+
+model users {
+  user_id                                       String          @id(map: "user_id_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  first_name                                    String?         @db.VarChar
+  last_name                                     String?         @db.VarChar
+  email_id                                      String          @unique(map: "email_id_ukey") @db.VarChar(100)
+  user_password                                 String          @db.VarChar
+  status                                        Int             @default(1)
+  created_by                                    String?         @db.Uuid
+  updated_by                                    String?         @db.Uuid
+  deleted_by                                    String?         @db.Uuid
+  created_at                                    DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                                    DateTime?       @db.Timestamptz(6)
+  deleted_at                                    DateTime?       @db.Timestamptz(6)
+  campaign_campaign_created_byTousers           campaign[]      @relation("campaign_created_byTousers")
+  campaign_campaign_deleted_byTousers           campaign[]      @relation("campaign_deleted_byTousers")
+  campaign_campaign_updated_byTousers           campaign[]      @relation("campaign_updated_byTousers")
+  campaign_type_campaign_type_created_byTousers campaign_type[] @relation("campaign_type_created_byTousers")
+  campaign_type_campaign_type_deleted_byTousers campaign_type[] @relation("campaign_type_deleted_byTousers")
+  campaign_type_campaign_type_updated_byTousers campaign_type[] @relation("campaign_type_updated_byTousers")
+  location_location_created_byTousers           location[]      @relation("location_created_byTousers")
+  location_location_deleted_byTousers           location[]      @relation("location_deleted_byTousers")
+  location_location_updated_byTousers           location[]      @relation("location_updated_byTousers")
+  platform_platform_created_byTousers           platform[]      @relation("platform_created_byTousers")
+  platform_platform_deleted_byTousers           platform[]      @relation("platform_deleted_byTousers")
+  platform_platform_updated_byTousers           platform[]      @relation("platform_updated_byTousers")
+  product_product_created_byTousers             product[]       @relation("product_created_byTousers")
+  product_product_deleted_byTousers             product[]       @relation("product_deleted_byTousers")
+  product_product_updated_byTousers             product[]       @relation("product_updated_byTousers")
+}
