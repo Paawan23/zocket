@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "a80d14f0-e157-4bac-bf25-6e7a4c55dee1",
+		"name": "zocket",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19572138"
+	},
+	"item": [
+		{
+			"name": "platform",
+			"item": [
+				{
+					"name": "create platform",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"platform_name\": \"Instagram\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/create-platform",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"create-platform"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "campaign type",
+			"item": [
+				{
+					"name": "CREATE Campaign type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"campaign_type_name\": \"Increase the catalogue sales\",\r\n    \"platform_id\" : \"b4a45f84-a865-475d-af03-074bc609905e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/create-campaignType",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"create-campaignType"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "CREATE PRODUCT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_name\": \"Chocolate truffle cake\",\r\n    \"product_image\": \"chocolate_truffle_cake\",\r\n    \"price\": \"2190\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/create-product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"create-product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "campaign",
+			"item": [
+				{
+					"name": "CREATE CAMPAIGN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"campaign_type_id\": \"ba42d5aa-2848-4185-8c1c-e40850408e01\",\r\n    \"product_id\": \"0695a9c8-75e5-4d7f-96e7-28fe34b11bf6\",\r\n    \"campaign_start_date\": \"23 Aug 2022\",\r\n    \"campaign_end_date\": \"29 Aug 2022\",\r\n    \"campaign_budget\": \"10000\",\r\n    \"location_id\": \"2311af36-0ebd-499e-9f14-ee3e0d893e60\",\r\n    \"target_radius\": 24\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/create-campaign",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"create-campaign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCampaigns",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCampaignsByPlatform",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"platform_id\": \"212ac580-f6b5-4630-8fe9-eabc38ead75d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/getAllCampaignsByPlatform",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"getAllCampaignsByPlatform"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
